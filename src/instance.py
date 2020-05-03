@@ -77,15 +77,13 @@ class InstanceUtilities:
         return Instance(matrix, colCount, rowCount, startX, startY, endX, endY)
 
     @staticmethod
-    def displayInstanceWithPath(instance, path):
-        print(len(path))
+    def displayInstanceWithPath(path):
         for node in path:
             while path.count(node) > 1:
                 path.remove(node)
         m.path = path
         plt.show()
-        print(len(path))
-
+        print(path)
 
 
 

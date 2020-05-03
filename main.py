@@ -2,7 +2,7 @@ import sys
 import time
 sys.path.append('src')
 
-from src.jps import JPS
+from src.pathplanning import PathPlanning
 from src.grid import Grid
 from src.instance import InstanceUtilities
 
@@ -22,19 +22,20 @@ def executeJPSOnCSVInstance(url):
 
     startTime = time.time()
 
-    jps = JPS(grid)
-    path = jps.findPath(instance.startX, instance.startY, instance.endX, instance.endY)
+    method = PathPlanning(grid)
+    path = method.findPath(instance.startX, instance.startY, instance.endX, instance.endY, 'A*')
 
     endTime = time.time() - startTime
 
-    InstanceUtilities.displayInstanceWithPath(instance, path)
+    InstanceUtilities.displayInstanceWithPath(path)
 
     Colors.queryPrintColor(Colors.GREY)
 
     print('Done. Result computed in ' + str(endTime) + ' ms.')
+    print("Expand node number is: " + str(method.expendCount) + '.')
 
 if __name__ == '__main__':
-    if (len(sys.argv) > 1):
+    if len(sys.argv) > 1:
         executeJPSOnCSVInstance(sys.argv[1])
     else:
         print('Please pass a valid instance CSV file as first argument.')

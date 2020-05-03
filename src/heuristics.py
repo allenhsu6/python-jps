@@ -15,14 +15,9 @@ def euclidean(dx, dy):
     return math.sqrt(dx * dx + dy * dy)
 
 '''
-Octile distance.
+diagonal distance
 '''
-def octile(dx, dy):
+def diagonal(dx, dy):
       F = SQRT2 - 1
       return F * dx + dy if (dx < dy) else F * dy + dx
 
-'''
-Chebyshev distance.
-'''
-def chebyshev(dx, dy):
-    return max(dx, dy)

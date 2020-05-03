@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib.pyplot as plt
-import math
 import copy
-import time
-from scipy.spatial import cKDTree
 
 
 class MapInfo(object):

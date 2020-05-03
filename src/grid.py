@@ -78,19 +78,19 @@ class Grid():
             neighbors.append(nodes[y][x - 1])
 
         # ↖
-        if (self.isWalkableAt(x - 1, y - 1)):
+        if (self.isWalkableAt(x - 1, y - 1)) and (self.isWalkableAt(x-1, y) or self.isWalkableAt(x, y-1)):
             neighbors.append(nodes[y - 1][x - 1])
 
         # ↗
-        if (self.isWalkableAt(x + 1, y - 1)):
+        if (self.isWalkableAt(x + 1, y - 1)) and (self.isWalkableAt(x+1, y) or self.isWalkableAt(x, y-1)):
             neighbors.append(nodes[y - 1][x + 1])
 
         # ↘
-        if (self.isWalkableAt(x + 1, y + 1)):
+        if (self.isWalkableAt(x + 1, y + 1)) and (self.isWalkableAt(x+1, y) or self.isWalkableAt(x, y+1)):
             neighbors.append(nodes[y + 1][x + 1])
 
         # ↙
-        if (self.isWalkableAt(x - 1, y + 1)):
+        if (self.isWalkableAt(x - 1, y + 1))and (self.isWalkableAt(x-1, y) or self.isWalkableAt(x, y+1)):
             neighbors.append(nodes[y + 1][x - 1])
     
         return neighbors

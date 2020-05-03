@@ -10,9 +10,9 @@ class Node():
         self.opened = False
         self.closed = False
         self.parent = None
-
+    # 定义node的 < 符号
     def __lt__(self, other):
-        return self.g - self.f < other.g - other.f
-
+        return self.f < other.f
+    # 定义node的 > 符号
     def __gt__(self, other):
-        return self.g - self.f > other.g - other.f
+        return self.f > other.f
