@@ -99,6 +99,7 @@ class MapInfo(object):
         _border_x = [0, self.width, self.width, 0, 0]
         _border_y = [0, 0, self.height, self.height, 0]
         plt.plot(_border_x, _border_y, 'black')
+        plt.grid(True)
 
 if __name__ == "__main__":
     m = MapInfo()

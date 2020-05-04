@@ -5,8 +5,7 @@ sys.path.append('src')
 from src.pathplanning import PathPlanning
 from src.grid import Grid
 from src.instance import InstanceUtilities
-
-from src.colors import Colors
+from src.curve import curve_show
 
 def executeJPSOnCSVInstance(url):
     print('Reading the instance..')
@@ -28,13 +27,12 @@ def executeJPSOnCSVInstance(url):
     endTime = time.time() - startTime
 
     InstanceUtilities.displayInstanceWithPath(path)
-
-    Colors.queryPrintColor(Colors.GREY)
-
+    curve_show(path)
     print('Done. Result computed in ' + str(endTime) + ' ms.')
     print("Expand node number is: " + str(method.expendCount) + '.')
 
 if __name__ == '__main__':
+
     if len(sys.argv) > 1:
         executeJPSOnCSVInstance(sys.argv[1])
     else:

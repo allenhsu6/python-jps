@@ -30,8 +30,6 @@ class PathPlanning:
     # While the open list is not empty, takes the first node of the heap
     # (closest node top the end node) and if it is not the end node,
     # looks for its successors in identifySuccessors().
-    # 用起点初始化open list
-    # 如果open list 非空，获取heap中的最小元素
     #
     def findPath(self, startX, startY, endX, endY, method):
 
@@ -118,20 +116,20 @@ class PathPlanning:
         dx = x - px
         dy = y - py
 
-        if (not self.grid.isWalkableAt(x, y)):
+        if not self.grid.isWalkableAt(x, y):
             return None
 
-        if (self.grid.getNodeAt(x, y) == self.endNode):
+        if self.grid.getNodeAt(x, y) == self.endNode:
             return [x, y]
 
         # check for forced neighbors
         # along the diagonal
-        if (dx != 0 and dy != 0):
-            if ((self.grid.isWalkableAt(x - dx, y + dy) and not self.grid.isWalkableAt(x - dx, y)) or
-                (self.grid.isWalkableAt(x + dx, y - dy) and not self.grid.isWalkableAt(x, y - dy))):
+        if dx != 0 and dy != 0:
+            if ((self.grid.isWalkableAt(x - dx, y + dy) and not self.grid.isWalkableAt(x - dx, y) and self.grid.isWalkableAt(x, y + dy)) or
+                (self.grid.isWalkableAt(x + dx, y - dy) and not self.grid.isWalkableAt(x, y - dy) and self.grid.isWalkableAt(x + dx, y))):
                 return [x, y]
             # when moving diagonally, must check for vertical/horizontal jump points
-            if (self.jump(x + dx, y, x, y) or self.jump(x, y + dy, x, y)):
+            if self.jump(x + dx, y, x, y) or self.jump(x, y + dy, x, y):
                 return [x, y]
         # horizontally/vertically
         else:
@@ -143,8 +141,8 @@ class PathPlanning:
                 if ((self.grid.isWalkableAt(x + 1, y + dy) and not self.grid.isWalkableAt(x + 1, y)) or
                 (self.grid.isWalkableAt(x - 1, y + dy) and not self.grid.isWalkableAt(x - 1, y))):
                     return [x, y]
-
-        return self.jump(x + dx, y + dy, x, y)
+        if self.grid.isWalkableAt(x + dx, y) or self.grid.isWalkableAt(x, y + dy):
+            return self.jump(x + dx, y + dy, x, y)
 
     # Finds all the walkable neighbors of the given node.
     def findNeighbors(self, node, method):
@@ -171,20 +169,20 @@ class PathPlanning:
                 dy = int((y - py) / max(abs(y - py), 1))
 
                 # search diagonally
-                if (dx != 0 and dy != 0):
-                    if (self.grid.isWalkableAt(x, y + dy)):
+                if dx != 0 and dy != 0:
+                    if self.grid.isWalkableAt(x, y + dy):
                         neighbors.append([x, y + dy])
 
-                    if (self.grid.isWalkableAt(x + dx, y)):
+                    if self.grid.isWalkableAt(x + dx, y):
                         neighbors.append([x + dx, y])
 
-                    if (self.grid.isWalkableAt(x + dx, y + dy)):
+                    if self.grid.isWalkableAt(x + dx, y + dy) and (self.grid.isWalkableAt(x + dx, y) or self.grid.isWalkableAt(x, y + dy)):
                         neighbors.append([x + dx, y + dy])
 
-                    if (not self.grid.isWalkableAt(x - dx, y)):
+                    if not self.grid.isWalkableAt(x - dx, y):
                         neighbors.append([x - dx, y + dy])
 
-                    if (not self.grid.isWalkableAt(x, y - dy)):
+                    if not self.grid.isWalkableAt(x, y - dy):
                         neighbors.append([x + dx, y - dy])
 
                 # search horizontally/vertically
