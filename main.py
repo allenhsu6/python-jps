@@ -23,7 +23,7 @@ def executeJPSOnCSVInstance(url):
     startTime = time.time()
 
     method = PathPlanning(grid)
-    path = method.findPath(instance.startX, instance.startY, instance.endX, instance.endY, 'A*')
+    path = method.findPath(instance.startX, instance.startY, instance.endX, instance.endY, 'jps')
 
     endTime = time.time() - startTime
 
