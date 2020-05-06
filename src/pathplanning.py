@@ -22,7 +22,6 @@ class PathPlanning:
     def __init__(self, grid):
         self.grid = grid
         self.openList = []
-        self.heuristic = heuristics.manhattan
         self.startNode = Node(-1, -1)
         self.endNode = Node(-1, -1)
         self.expendCount = 0
@@ -51,7 +50,10 @@ class PathPlanning:
             node.closed = True
 
             if node == self.endNode:
-                return utils.expandPath(utils.backtrace(self.endNode))
+                if (method == 'jps') or (method == 'A*'):
+                    return utils.expandPath(utils.backtrace(self.endNode))
+                else:
+                    return utils.backtrace(self.endNode)
             # 如果不是终点，继续寻找当前node的successor
             self.identifySuccessors(node, method)
 
@@ -86,12 +88,25 @@ class PathPlanning:
                 jumpNode = self.grid.getNodeAt(jx, jy)
                 if jumpNode.closed:
                     continue
-                d = heuristics.euclidean(abs(jx - x), abs(jy - y))
+                if (method == 'A*') or (method == 'jps'):
+                    d = heuristics.manhattan(abs(jx - x), abs(jy - y))
+                else:
+                    d = heuristics.diagonal(abs(jx - x), abs(jy - y))
                 ng = node.g + d  # next `g` value
 
                 if not jumpNode.opened or ng < jumpNode.g:
                     jumpNode.g = ng
                     jumpNode.h = heuristics.diagonal(abs(jx - endX), abs(jy - endY))
+                    if (method == 'A*') or (method == 'jps'):
+                        jumpNode.h = heuristics.manhattan(abs(jx - endX), abs(jy - endY))
+                    else:
+                        # todo: 使用改进优秀的启发函数
+                        dx1 = abs(jx - endX)
+                        dy1 = abs(jy - endY)
+                        dx2 = abs(self.startNode.x - endX)
+                        dy2 = abs(self.startNode.y - endY)
+                        cross = abs(dx1 * dy2 - dx2 * dy1) / (heuristics.euclidean(dx2, dy2) + 1)
+                        jumpNode.h = heuristics.diagonal(abs(jx - x), abs(jy - y)) + cross
                     jumpNode.f = jumpNode.g + jumpNode.h
                     jumpNode.parent = node
                     if not jumpNode.opened:
@@ -101,9 +116,6 @@ class PathPlanning:
                         for i in range(len(self.openList)):
                             if self.openList[i][1] == jumpNode:
                                 self.openList[i] = (jumpNode.f, jumpNode)
-
-
-
 
     # Jumps recursively until a jump point is found.
     def jump(self, x, y, px, py):
@@ -156,9 +168,9 @@ class PathPlanning:
         y = node.y
         neighbors = []
 
-        if method == 'jps':
+        if (method == 'jps') or (method == 'w_jps'):
             # directed pruning: can ignore most neighbors, unless forced.
-            if (parent):
+            if parent:
 
                 px = parent.x
                 py = parent.y

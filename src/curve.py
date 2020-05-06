@@ -2,7 +2,7 @@ import bisect
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import Counter
+from scipy.spatial import cKDTree
 
 
 class Spline:
@@ -183,16 +183,56 @@ def calc_spline_course(x, y, ds=0.1):
 
     return rx, ry, ryaw, rk, s
 
-
-def curve_show(path):
-    plt.figure()
-    points = np.array(path)
+def process_by_distance(points, distance_bound = 3):
+    for item in points:
+        distance = cKDTree(points)
+        d,_ = distance.query(item, 2, distance_upper_bound=distance_bound)
+        if d[1]:
+            points = np.delete(points,[_[1]],axis = 0)
+        return points
+def process_by_same_x(points):
     x = points[:, 0]
-    y = points[:, 1]
+    x = [float(a) for a in x]
+    b = set()
+    delete_list = []
+    for i in range(len(x)):
+        if x[i] in b:
+            delete_list.append(i)
+        else:
+            b.add(x[i])
+    return np.delete(points, delete_list, axis=0)
+
+def curve_show(path, curve_method_threshold = 10):
+    # plt.figure()
+    # 随意给点都可以实现三次曲线拟合
+    # path = [[3, 14], [3, 12], [3, 8], [3, 2], [5, -1],[10,-3],[20, -5], [30, -7], [40, -1],[47, 1], [48, 2], [50, 4], [50, 14]]
+
+    pre_path = np.array(path)
+    path = process_by_same_x(pre_path)
+
+    points = np.array(path)
+    if len(path) < curve_method_threshold:
+        points = process_by_distance(points,2)
+        x = points[:, 0]
+        x = [float(a) for a in x]
+        b = set()
+        for i in range(len(x)):
+            if x[i] in b:
+                x[i] = x[i] + i/10  # todo
+            b.add(x[i])
+        y = points[:, 1]
+        y = [float(a) for a in y]
+
+    x = points[:,0]
+    y = points[:,1]
     spline = Spline(x, y)
-    rx = np.arange(min(x), max(x), 0.1)
+    rx = np.arange(min(x), max(x), 0.001)
     ry = [spline.calc(i) for i in rx]
-    plt.plot(x, y, "og")
+#####
+    px = pre_path[:,0]
+    py = pre_path[:,1]
+    plt.plot(px, py, "og")
+    plt.plot(px, py, "-b")
     plt.plot(rx, ry, "-r")
     plt.grid(True)
     plt.show()

@@ -21,7 +21,7 @@ class InstanceUtilities:
         matrix = []
 
         with open(url) as csv_file:
-            csvReader = csv.reader(csv_file, delimiter=';')
+            csvReader = csv.reader(csv_file, delimiter=',')
             startX = None
             startY = None
             endX = None
@@ -62,28 +62,24 @@ class InstanceUtilities:
                 
                 rowIdx = rowIdx + 1
             rowCount = rowIdx
-            # todo: 这里图像的长宽外围，可以自己设置
-            m.height = rowCount
-            m.width = colCount
 
         m.obstacle = obstacle
-        m.show()
-        if (startX == None):
+
+        if startX is None:
             raise Exception("The instance must have a start node.")
         
-        if (endX == None):
+        if endX is None:
             raise Exception("The instance must have a end node.")
 
         return Instance(matrix, colCount, rowCount, startX, startY, endX, endY)
 
     @staticmethod
     def displayInstanceWithPath(path):
-        for node in path:
-            while path.count(node) > 1:
-                path.remove(node)
+        print("path: " + str(path))
         m.path = path
+        plt.grid(True)
+        plt.axis('equal')
         plt.show()
-        print(path)
 
 
 

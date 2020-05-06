@@ -6,7 +6,7 @@ SQRT2 = math.sqrt(2)
 Manhattan distance.
 '''
 def manhattan(dx, dy):
-      return dx + dy
+      return dx * dy
 
 '''
 Euclidean distance.
@@ -20,4 +20,6 @@ diagonal distance
 def diagonal(dx, dy):
       F = SQRT2 - 1
       return F * dx + dy if (dx < dy) else F * dy + dx
+
+
 

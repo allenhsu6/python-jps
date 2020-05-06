@@ -1,5 +1,5 @@
 import math
-
+import time
 def backtrace(node):
     '''
     Backtrace according to the parent records and return the path.
@@ -33,16 +33,16 @@ def pathLength(path):
     '''
     Compute the length of the path.
     '''
-
-    for i in range(path.length):
-        a = path[i - 1]
-        b = path[i]
+    path_length_sum = 0
+    for i in range(len(path)-1):
+        a = path[i]
+        b = path[i+1]
         dx = a[0] - b[0]
         dy = a[1] - b[1]
 
-        sum += math.sqrt(dx * dx + dy * dy)
+        path_length_sum += math.sqrt(dx * dx + dy * dy)
 
-    return sum
+    return path_length_sum
 
 
 def interpolate(x0, y0, x1, y1):
@@ -50,7 +50,7 @@ def interpolate(x0, y0, x1, y1):
     Given the start and end coordinates, return all the coordinates lying
     on the line formed by these coordinates, based on Bresenham's algorithm.
     '''
-
+    time.sleep(0.0001)
     line = []
 
     dx = abs(x1 - x0)
@@ -88,7 +88,7 @@ def expandPath(path):
     expanded = []
     pathLen = len(path)
 
-    if (pathLen < 2):
+    if pathLen < 2:
         return expanded
 
     for i in range(pathLen - 1):
@@ -206,3 +206,9 @@ def compressPath(path):
     compressed.append([px,py])
 
     return compressed
+
+def rmRepeatedPoint(path):
+    for node in path:
+        while path.count(node) > 1:
+            path.remove(node)
+    return path

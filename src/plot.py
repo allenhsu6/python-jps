@@ -94,16 +94,9 @@ class MapInfo(object):
         t = list(zip(*self.path))
         plt.plot(t[0], t[1], color='purple')
 
-    def show(self):
-        plt.axis('equal')
-        _border_x = [0, self.width, self.width, 0, 0]
-        _border_y = [0, 0, self.height, self.height, 0]
-        plt.plot(_border_x, _border_y, 'black')
-        plt.grid(True)
 
 if __name__ == "__main__":
     m = MapInfo()
-    m.show()    # 画墙
     m.start = (10, 10)
     m.end = (50, 30)
     m.obstacle = [(20, i) for i in range(30)]
