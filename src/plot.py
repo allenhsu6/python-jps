@@ -48,7 +48,7 @@ class MapInfo(object):
     def obstacle(self, o):
         self._obstacle = copy.deepcopy(o)
         t = list(zip(*self.obstacle))
-        plt.plot(t[0], t[1], 's', color='black')
+        plt.plot(t[0], t[1], '.', color='black')
 
 
     @property
@@ -92,7 +92,7 @@ class MapInfo(object):
     def path(self, o):
         self._path = copy.deepcopy(o)
         t = list(zip(*self.path))
-        plt.plot(t[0], t[1], color='purple')
+        plt.plot(t[0], t[1], color='red')
 
 
 if __name__ == "__main__":

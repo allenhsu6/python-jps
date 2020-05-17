@@ -25,19 +25,21 @@ def global_threshold(image, image_name):
     cv.imshow(image_name, gray)
 
 def process_case3():
-    img = cv.imread("/Users/allen/Desktop/data/pre_map3.jpg")
-    new_image = cv.resize(img,(100, 120))
-    img_gray = cv.cvtColor(new_image, cv.COLOR_RGB2GRAY)
+    url = '/Users/allen/Desktop/map/'
+    for i in range(10):
+        img = cv.imread(url + str(i) + '.png')
+        new_image = cv.resize(img,(200, 200))
+        img_gray = cv.cvtColor(new_image, cv.COLOR_RGB2GRAY)
 
-    h, w = img_gray.shape[:2]
-    for row in range(h):
-        for col in range(w):
-            if img_gray[row, col] >20:
-                img_gray[row, col] = 255
-            else:
-                img_gray[row,col] = 0
-    pixel_data = np.array(img_gray)     # matrix类型
-    np.savetxt('map3.csv', pixel_data, delimiter = ',')
+        h, w = img_gray.shape[:2]
+        for row in range(h):
+            for col in range(w):
+                if img_gray[row, col] >20:
+                    img_gray[row, col] = 255
+                else:
+                    img_gray[row,col] = 0
+        pixel_data = np.array(img_gray)     # matrix类型
+        np.savetxt(url+'csv/'+str(i)+'.csv', pixel_data, delimiter = ',')
 
 
 if __name__ == '__main__':
